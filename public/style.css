@@ -1,0 +1,19 @@
+.chat {
+  background-color: aquamarine;
+  border: 2px solid red;
+  border-radius: 4px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 60%;
+  margin: 10px auto;
+}
+h1 {
+  text-align: center;
+}
+.message {
+  padding: 5px 15px;
+  border: 2px solid brown;
+  border-radius: 3px;
+}
