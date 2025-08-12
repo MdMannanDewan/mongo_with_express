@@ -23,3 +23,7 @@ h1 {
   flex-direction: column;
   gap: 5px;
 }
+.buttons {
+  display: flex;
+  gap: 5px;
+}

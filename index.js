@@ -1,18 +1,20 @@
 // require express app
 const express = require("express");
 const app = express();
-
+const port = 8080;
+// import method override
+const methodOverride = require("method-override");
 // import chat
 const Chat = require("./models/chat");
-
 // require path
 const path = require("path");
 
+// use method override
+app.use(methodOverride("_method"));
 // to set the directiory where your views file are located
 app.set("views", path.join(__dirname, "views"));
 // set view engine to ejs
 app.set("view engine", "ejs");
-
 // To use static file path
 app.use(express.static(path.join(__dirname, "public")));
 // To parse data from req.body in post req
@@ -44,8 +46,6 @@ async function main() {
 //   .then((res) => console.log(res))
 //   .catch((err) => console.log(err));
 
-const port = 8080;
-
 app.get("/", (req, res) => {
   res.send("hello express");
 });
@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 // index route
 app.get("/chats", async (req, res) => {
   let chats = await Chat.find();
-  console.log(chats);
+  // console.log(chats);
   res.render("index", { chats });
 });
 
@@ -75,6 +75,32 @@ app.post("/chats", (req, res) => {
     .save()
     .then((res) => "chat saved successfully")
     .catch((err) => console.log(err));
+  res.redirect("/chats");
+});
+
+// edit route
+app.get("/chats/:id/edit", async (req, res) => {
+  const { id } = req.params;
+  const chat = await Chat.findById(id);
+  res.render("edit", { chat });
+});
+
+app.patch("/chats/:id", async (req, res) => {
+  const { message } = req.body;
+  const { id } = req.params;
+  const editedChat = await Chat.findByIdAndUpdate(
+    id,
+    { message },
+    { runValidators: true, new: true }
+  );
+  res.redirect("/chats");
+});
+
+// Delete route
+app.delete("/chats/:id", async (req, res) => {
+  const { id } = req.params;
+  const deletedChat = await Chat.findByIdAndDelete(id);
+  console.log(deletedChat);
   res.redirect("/chats");
 });
 
