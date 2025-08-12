@@ -15,6 +15,8 @@ app.set("view engine", "ejs");
 
 // To use static file path
 app.use(express.static(path.join(__dirname, "public")));
+// To parse data from req.body in post req
+app.use(express.urlencoded({ extended: true }));
 
 // mongoose setup
 const mongoose = require("mongoose");
@@ -53,6 +55,26 @@ app.get("/chats", async (req, res) => {
   let chats = await Chat.find();
   // console.log(chats);
   res.render("index", { chats });
+});
+
+// new chat route
+app.get("/chats/new", (req, res) => {
+  res.render("newChat");
+});
+
+// post req form new chat
+app.post("/chats", (req, res) => {
+  const { from, message, to } = req.body;
+  const newChat = new Chat({
+    from,
+    message,
+    to,
+  });
+  newChat
+    .save()
+    .then((res) => "chat saved successfully")
+    .catch((err) => console.log(err));
+  res.redirect("/chats");
 });
 
 app.listen(port, () => {
