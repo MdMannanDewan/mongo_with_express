@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 // index route
 app.get("/chats", async (req, res) => {
   let chats = await Chat.find();
-  // console.log(chats);
+  console.log(chats);
   res.render("index", { chats });
 });
 
@@ -69,6 +69,7 @@ app.post("/chats", (req, res) => {
     from,
     message,
     to,
+    created_at: new Date(),
   });
   newChat
     .save()

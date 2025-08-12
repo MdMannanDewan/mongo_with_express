@@ -17,3 +17,9 @@ h1 {
   border: 2px solid brown;
   border-radius: 3px;
 }
+
+.time {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
